@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Bootstrap 4 Website Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.12.5/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.1.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container" style="margin-top:30px">
+        <div class="row">
+            <div class="col-sm-6">
+                <h2>聚类点</h2>
+                <div style="height: 500px">
+                    <textarea style="width: 100%; height: 100%" id="clusters"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <h2>k-means聚类过程</h2>
+                <div style="height: 500px">
+                    <canvas id="show" style="width: 100%;height: 100%"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script>
+    Images = ["data/images/4_0.png","data/images/4_1.png","data/images/4_2.png","data/images/4_3.png","data/images/4_4.png","data/images/4_5.png"]
+    Clusters = ["Cluster: 0 [5.370588235294116 3.8 1.5176470588235293 0.2764705882352942]","Cluster: 1 [5.901612903225806 2.7483870967741946 4.393548387096775 1.4338709677419355]","Cluster: 2 [4.818181818181818 3.221212121212121 1.4363636363636358 0.22727272727272727]","Cluster: 3 [6.849999999999999 3.073684210526315 5.742105263157893 2.071052631578947]"]
+    window.onload = function () {
+        var CANVAS = document.getElementById('show');
+        context = CANVAS.getContext('2d');
+        var ratio = getPixelRatio(context)
+        var img = new Image();
+        SetClusters()
+        img.onload = function () {
+            context.drawImage(img, 0, 0, 300 * ratio,150 * ratio);
+        }
+        var count = 0
+        var interval = setInterval(function(){
+            if(count < Images.length)
+            {
+                img.src = Images[count]
+            }
+            else
+            {
+                clearInterval(interval);
+                return
+            }
+            count = count + 1
+        },1000)
+    }
+    function getPixelRatio(context) {
+        var backingStore = context.backingStorePixelRatio ||
+            context.webkitBackingStorePixelRatio ||
+            context.mozBackingStorePixelRatio ||
+            context.msBackingStorePixelRatio ||
+            context.oBackingStorePixelRatio ||
+            context.backingStorePixelRatio || 1;
+
+        return (window.devicePixelRatio || 1) / backingStore;
+    }
+    function SetClusters(){
+        for(var i=0;i<Clusters.length;i++)
+        {
+            document.getElementById("clusters").value = document.getElementById("clusters").value + Clusters[i] + '\n'
+        }
+    }
+</script>
+
+</html>
